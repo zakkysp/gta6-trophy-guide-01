@@ -3,23 +3,107 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GTA VI trophy checklist</title>
+<title>Leonida Trophy Guide — GTA VI Platinum Tracker</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>GTA VI trophy checklist</h1>
-  <p id="progress">0 of 55 earned</p>
+<header class="masthead">
+  <div class="masthead-text">
+    <p class="kicker">Grand Theft Auto VI &middot; PlayStation 5 &middot; 55 trophies</p>
+    <h1>Leonida Trophy Guide</h1>
+    <p class="subtitle">An offline guide and tracker for the GTA VI platinum. Tick off trophies as you earn them — your progress never leaves this browser.</p>
+  </div>
+  <div class="progress-card" id="progressCard">
+    <p class="big-count"><span id="earnedCount">0</span><span class="of"> / 55</span></p>
+    <p class="progress-label">trophies earned</p>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <p class="grade-counts" id="gradeCounts"></p>
+  </div>
 </header>
-<div class="controls">
-  <label>Grade <select id="grade"><option value="all">All</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
-  <button id="export" type="button">Export progress</button>
-  <label class="import">Import progress <input id="import" type="file" accept="application/json"></label>
-</div>
-<table>
-  <thead><tr><th>Earned</th><th>Trophy</th><th>Grade</th><th>How to get it</th></tr></thead>
-  <tbody id="rows"></tbody>
-</table>
+
+<nav class="tabs" id="tabs">
+  <button type="button" data-view="checklist" class="active">Checklist</button>
+  <button type="button" data-view="roadmap">Roadmap to Platinum</button>
+  <button type="button" data-view="missables">Missables</button>
+  <button type="button" data-view="about">About &amp; Sources</button>
+</nav>
+
+<section class="toolbar" id="toolbar">
+  <label class="search-box">Search <input id="search" type="search" placeholder="Trophy name or word…" autocomplete="off"></label>
+  <div class="kind-filters" id="kindFilters">
+    <button type="button" data-kind="all" class="active">All</button>
+    <button type="button" data-kind="story">Story</button>
+    <button type="button" data-kind="missable">Missable</button>
+    <button type="button" data-kind="collectibles">Collectibles</button>
+    <button type="button" data-kind="activities">Activities</button>
+    <button type="button" data-kind="online">Online</button>
+  </div>
+  <label class="grade-filter">Grade
+    <select id="grade">
+      <option value="all">All grades</option>
+      <option value="platinum">Platinum</option>
+      <option value="gold">Gold</option>
+      <option value="silver">Silver</option>
+      <option value="bronze">Bronze</option>
+    </select>
+  </label>
+  <label class="spoiler-toggle"><input id="spoiler" type="checkbox"> Hide story spoilers</label>
+  <div class="io-buttons">
+    <button id="export" type="button">Export progress</button>
+    <label class="import-btn">Import progress <input id="import" type="file" accept="application/json,.json"></label>
+  </div>
+</section>
+
+<main id="main">
+  <section id="view-checklist" class="view">
+    <p class="view-intro" id="listIntro"></p>
+    <ul class="trophy-list" id="trophyList"></ul>
+    <p class="empty-note" id="emptyNote" hidden>No trophies match these filters. Try clearing the search or picking another kind.</p>
+  </section>
+
+  <section id="view-roadmap" class="view" hidden>
+    <p class="view-intro">The platinum takes about 200 hours (PowerPyx: difficulty 4/10). One playthrough is enough, and there is no mission replay — so keep a save at the start and end of each chapter. The order below follows the official descriptions: story first, then the character questlines, then the 100% checklist, then cleanup.</p>
+    <div id="roadmapStages"></div>
+  </section>
+
+  <section id="view-missables" class="view" hidden>
+    <p class="view-intro">Built from the official descriptions and the launch guides. Only one trophy is reported as possibly missable — everything else can be finished in free-roam after the story.</p>
+    <div id="missableList"></div>
+  </section>
+
+  <section id="view-about" class="view" hidden>
+    <h2>About this guide</h2>
+    <p>Every trophy shows its official name, description and grade exactly as PlayStation publishes them (as listed by Exophase and PSNProfiles, who agree on all 55). Each guide is written in our own words and names its sources beside it — a specific step with no source gets no credit, so where a step could not be verified we say so plainly instead of inventing a location.</p>
+    <h3>Key facts</h3>
+    <ul>
+      <li>55 trophies: 1 platinum, 2 gold, 6 silver, 46 bronze. 28 are hidden on PlayStation until earned.</li>
+      <li>No online trophies — the whole list is single-player and offline.</li>
+      <li>Estimated difficulty 4/10, about 200 hours to the platinum (PowerPyx).</li>
+      <li>One playthrough is enough. There is no mission replay and no New Game+, but free-roam continues after the story.</li>
+      <li>Cheats disable trophies and saving — keep them off during a trophy run (PowerPyx, GTABase).</li>
+      <li>Keep 15 manual save slots in mind: save at the start and end of each chapter, then rotate the rest for cleanup.</li>
+    </ul>
+    <h3>Sources</h3>
+    <ul id="sourceList"></ul>
+    <h3>Honesty notes</h3>
+    <ul>
+      <li>Four trophies were still unconfirmed when this guide was written on launch day (19 November 2026): In The Beginning…, Bad Luck, I Guess, The Truth Is Out There and Ten Pin. PowerPyx lists them as unknown, with a best guess only. Their guides say so — they do not invent a solution.</li>
+      <li>Whether the Chapter 1 balcony meditation counts toward Positive Mental Attitude is unconfirmed (PowerPyx). Do it anyway — it costs a minute and it is the only step that can disappear.</li>
+      <li>Counts (250 stunts, 42 shooting-range golds, 100 WAiNK scans and the rest) come from the official descriptions and PSNProfiles' tracked targets.</li>
+    </ul>
+    <p class="disclaimer">An unofficial fan guide. Grand Theft Auto and GTA are trademarks of Take-Two Interactive; this guide uses no Rockstar logo, artwork or game screenshots. Your progress is stored only in this browser (localStorage) unless you export it yourself.</p>
+  </section>
+</main>
+
+<aside class="detail" id="detail" hidden>
+  <button type="button" class="detail-close" id="detailClose">Close &times;</button>
+  <div id="detailBody"></div>
+</aside>
+
+<footer>
+  <p>Leonida Trophy Guide &middot; offline, open source (MIT) &middot; data: the 55 official GTA VI PlayStation 5 trophies</p>
+</footer>
+
 <script type="module" src="app.js"></script>
 </body>
 </html>
